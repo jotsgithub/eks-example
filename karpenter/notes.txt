@@ -1,0 +1,15 @@
+k scale deploy inflate -n karpenter-test --replicas=10
+
+k get po -n karpenter-test
+
+k get mutatingwebhookconfigurations
+
+k get validatingwebhookconfigurations
+
+k api-resources | grep karpenter
+
+k delete provisioner default
+
+
+2023-11-01T10:54:27.153Z	DEBUG	controller.machine.lifecycle	created launch template	{"commit": "322822a", "machine": "default-kfrpw", "provisioner": "default", "launch-template-name": "karpenter.k8s.aws/10495232733076683023", "id": "lt-0f15140f666e0c6ea"}
+launched machine	{"commit": "322822a", "machine": "default-kfrpw", "provisioner": "default", "provider-id": "aws:///eu-west-1a/i-0303feb64fdb8625c", "instance-type": "m6i.xlarge", "zone": "eu-west-1a", "capacity-type": "spot", "allocatable": {"cpu":"3920m","ephemeral-storage":"17Gi","memory":"14162Mi","pods":"58"}}

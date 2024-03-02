@@ -1,0 +1,11 @@
+apiVersion: karpenter.k8s.aws/v1alpha1
+kind: AWSNodeTemplate
+metadata:
+  name: default
+spec:
+  subnetSelector:
+    aws-ids: "*Private*"
+#    karpenter.sh/discovery: ${cluster_name}
+  securityGroupSelector:
+    Name: "i765006-test-1-worker-node-sg"
+#    karpenter.sh/discovery: ${cluster_name}

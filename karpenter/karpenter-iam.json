@@ -1,0 +1,136 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "AllowScopedEC2InstanceActions",
+      "Effect": "Allow",
+      "Resource": "*",
+      "Action": [
+        "ec2:RunInstances",
+        "ec2:CreateFleet"
+      ]
+    },
+    {
+      "Sid": "AllowScopedEC2InstanceActionsWithTags",
+      "Effect": "Allow",
+      "Resource": "*",
+      "Action": [
+        "ec2:RunInstances",
+        "ec2:CreateFleet",
+        "ec2:CreateLaunchTemplate"
+      ],
+      "Condition": {
+        "StringLike": {
+          "aws:RequestTag/karpenter.sh/provisioner-name": "*"
+        }
+      }
+    },
+    {
+      "Sid": "AllowScopedResourceCreationTagging",
+      "Effect": "Allow",
+      "Resource": "*",
+      "Action": "ec2:CreateTags",
+      "Condition": {
+        "StringEquals": {
+          "ec2:CreateAction": [
+            "RunInstances",
+            "CreateFleet",
+            "CreateLaunchTemplate"
+          ]
+        },
+        "StringLike": {
+          "aws:RequestTag/karpenter.sh/provisioner-name": "*"
+        }
+      }
+    },
+    {
+      "Sid": "AllowMachineMigrationTagging",
+      "Effect": "Allow",
+      "Resource": "*",
+      "Action": "ec2:CreateTags",
+      "Condition": {
+        "StringLike": {
+          "aws:RequestTag/karpenter.sh/provisioner-name": "*"
+        },
+        "ForAllValues:StringEquals": {
+          "aws:TagKeys": [
+            "karpenter.sh/provisioner-name",
+            "karpenter.sh/managed-by"
+          ]
+        }
+      }
+    },
+    {
+      "Sid": "AllowScopedDeletion",
+      "Effect": "Allow",
+      "Resource": "*",
+      "Action": [
+        "ec2:TerminateInstances",
+        "ec2:DeleteLaunchTemplate"
+      ],
+      "Condition": {
+        "StringLike": {
+          "aws:ResourceTag/karpenter.sh/provisioner-name": "*"
+        }
+      }
+    },
+    {
+      "Sid": "AllowRegionalReadActions",
+      "Effect": "Allow",
+      "Resource": "*",
+      "Action": [
+        "ec2:DescribeAvailabilityZones",
+        "ec2:DescribeImages",
+        "ec2:DescribeInstances",
+        "ec2:DescribeInstanceTypeOfferings",
+        "ec2:DescribeInstanceTypes",
+        "ec2:DescribeLaunchTemplates",
+        "ec2:DescribeSecurityGroups",
+        "ec2:DescribeSpotPriceHistory",
+        "ec2:DescribeSubnets"
+      ],
+      "Condition": {
+      }
+    },
+    {
+      "Sid": "AllowSSMReadActions",
+      "Effect": "Allow",
+      "Resource": "*",
+      "Action": "ssm:GetParameter"
+    },
+    {
+      "Sid": "AllowPricingReadActions",
+      "Effect": "Allow",
+      "Resource": "*",
+      "Action": "pricing:GetProducts"
+    },
+    {
+      "Sid": "AllowInterruptionQueueActions",
+      "Effect": "Allow",
+      "Resource": "*",
+      "Action": [
+        "sqs:DeleteMessage",
+        "sqs:GetQueueAttributes",
+        "sqs:GetQueueUrl",
+        "sqs:ReceiveMessage"
+      ]
+    },
+    {
+      "Sid": "AllowPassingInstanceRole",
+      "Effect": "Allow",
+      "Resource": "*",
+      "Action": "iam:PassRole",
+      "Condition": {
+        "StringEquals": {
+          "iam:PassedToService": "ec2.amazonaws.com"
+        }
+      }
+    },
+    {
+      "Sid": "AllowAPIServerEndpointDiscovery",
+      "Effect": "Allow",
+      "Resource": "*",
+      "Action": "eks:DescribeCluster"
+    }
+  ]
+}

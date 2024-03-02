@@ -1,0 +1,13 @@
+.idea
+*.iml
+
+*/.terraform*
+terraform.tfstate*
+
+*.pem
+
+.DS_Store
+
+vendor
+
+lambda_functions/archives
